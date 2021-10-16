@@ -8,21 +8,21 @@
  * @format
  */
 
-import React, { Component } from 'react';
-import yoga from 'yoga-layout/dist/entry-browser';
-import YogaNode from './YogaNode';
-import CodeGenerators from './CodeGenerators';
-import URLShortener from './URLShortener';
-import Editor from './Editor';
-import { List, setIn } from 'immutable';
-import PositionRecord from './PositionRecord';
-import LayoutRecord from './LayoutRecord';
-import Sidebar from './Sidebar';
-import { Row, Col, Button } from 'antd';
-import btoa from 'btoa';
-import type { LayoutRecordT } from './LayoutRecord';
-import type { Yoga$Direction } from 'yoga-layout';
-import './index.css';
+import React, { Component } from "react";
+import yoga from "yoga-layout/dist/entry-browser";
+import YogaNode from "./YogaNode";
+import CodeGenerators from "./CodeGenerators";
+import URLShortener from "./URLShortener";
+import Editor from "./Editor";
+import { List, setIn } from "immutable";
+import PositionRecord from "./PositionRecord";
+import LayoutRecord from "./LayoutRecord";
+import Sidebar from "./Sidebar";
+import { Row, Col, Button } from "antd";
+import btoa from "btoa";
+import type { LayoutRecordT } from "./LayoutRecord";
+import type { Yoga$Direction } from "yoga-layout";
+import "./index.css";
 
 type Props = {
   layoutDefinition: Object,
@@ -45,7 +45,7 @@ type State = {
 };
 
 function getPath(path: Array<number>): Array<mixed> {
-  return path.reduce((acc, cv) => acc.concat('children', cv), []);
+  return path.reduce((acc, cv) => acc.concat("children", cv), []);
 }
 
 export default class Playground extends Component<Props, State> {
@@ -56,9 +56,9 @@ export default class Playground extends Component<Props, State> {
       width: 500,
       height: 500,
       children: [
-        { width: 100, height: 100, borderRadius: 0 },
-        { width: 100, height: 100, borderRadius: 0 },
-        { width: 100, height: 100, borderRadius: 0 },
+        { width: 100, height: 100, borderRadius: 20 },
+        { width: 100, height: 100, borderRadius: 20 },
+        { width: 100, height: 100, borderRadius: 20 },
       ],
     },
     direction: yoga.DIRECTION_LTR,
@@ -69,11 +69,11 @@ export default class Playground extends Component<Props, State> {
 
   rehydrate = (node: Object): LayoutRecord => {
     let record = LayoutRecord(node);
-    record = record.set('padding', PositionRecord(record.padding));
-    record = record.set('border', PositionRecord(record.border));
-    record = record.set('margin', PositionRecord(record.margin));
-    record = record.set('position', PositionRecord(record.position));
-    record = record.set('children', List(record.children.map(this.rehydrate)));
+    record = record.set("padding", PositionRecord(record.padding));
+    record = record.set("border", PositionRecord(record.border));
+    record = record.set("margin", PositionRecord(record.margin));
+    record = record.set("position", PositionRecord(record.position));
+    record = record.set("children", List(record.children.map(this.rehydrate)));
     return record;
   };
 
@@ -84,31 +84,31 @@ export default class Playground extends Component<Props, State> {
   };
 
   componentDidMount() {
-    document.addEventListener('keydown', this.onKeyDown);
+    document.addEventListener("keydown", this.onKeyDown);
 
     // rehydrate
     if (window.location.search && window.location.search.length > 1) {
       try {
         const restoredState = JSON.parse(
-          atob(window.location.search.substr(1)),
+          atob(window.location.search.substr(1))
         );
         this.setState({ layoutDefinition: this.rehydrate(restoredState) });
       } catch (e) {
         window.history.replaceState(
           {},
           null,
-          window.location.origin + window.location.pathname,
+          window.location.origin + window.location.pathname
         );
       }
     }
   }
 
   componentWillUnmount() {
-    document.removeEventListener('keydown', this.onKeyDown);
+    document.removeEventListener("keydown", this.onKeyDown);
   }
 
   onKeyDown = (e: KeyboardEvent) => {
-    if (e.key === 'Escape') {
+    if (e.key === "Escape") {
       this.hideSidePanes();
     }
   };
@@ -140,7 +140,7 @@ export default class Playground extends Component<Props, State> {
     const { selectedNodePath, layoutDefinition } = this.state;
     if (selectedNodePath) {
       const index = selectedNodePath.pop();
-      const path = getPath(selectedNodePath).concat('children');
+      const path = getPath(selectedNodePath).concat("children");
       const updatedChildren = layoutDefinition.getIn(path).delete(index);
       this.modifyAtPath(path, updatedChildren);
       this.setState({ selectedNodePath: null });
@@ -150,7 +150,7 @@ export default class Playground extends Component<Props, State> {
   onAdd = () => {
     const { selectedNodePath, layoutDefinition } = this.state;
     if (selectedNodePath) {
-      const path = getPath(selectedNodePath).concat('children');
+      const path = getPath(selectedNodePath).concat("children");
       const updatedChildren = layoutDefinition
         .getIn(path)
         .push(LayoutRecord({ width: 100, height: 100 }));
@@ -161,7 +161,7 @@ export default class Playground extends Component<Props, State> {
   modifyAtPath(
     path: Array<any>,
     value: any,
-    selectedNodePath?: ?Array<number> = this.state.selectedNodePath,
+    selectedNodePath?: ?Array<number> = this.state.selectedNodePath
   ) {
     // $FlowFixMe
     const layoutDefinition = setIn(this.state.layoutDefinition, path, value);
@@ -175,15 +175,15 @@ export default class Playground extends Component<Props, State> {
         {},
         null,
         window.location.origin +
-        window.location.pathname +
-        '?' +
-        this.getHash(layoutDefinition),
+          window.location.pathname +
+          "?" +
+          this.getHash(layoutDefinition)
       );
     }
   }
 
   getHash = (
-    layoutDefinition: LayoutRecordT = this.state.layoutDefinition,
+    layoutDefinition: LayoutRecordT = this.state.layoutDefinition
   ): string =>
     btoa(JSON.stringify(this.removeUnchangedProperties(layoutDefinition)));
 
@@ -193,8 +193,8 @@ export default class Playground extends Component<Props, State> {
     const untouchedPosition = PositionRecord({});
     const result = {};
     if (!node === untouchedLayout) {
-      Object.keys(node.toJS()).forEach(key => {
-        if (key === 'children' && node.children.size > 0) {
+      Object.keys(node.toJS()).forEach((key) => {
+        if (key === "children" && node.children.size > 0) {
           result.children = node.children
             .toJSON()
             .map(this.removeUnchangedProperties);
@@ -203,7 +203,7 @@ export default class Playground extends Component<Props, State> {
           !node[key].equals(untouchedPosition)
         ) {
           result[key] = {};
-          Object.keys(untouchedPosition.toJS()).forEach(position => {
+          Object.keys(untouchedPosition.toJS()).forEach((position) => {
             if (node[key][position] !== untouchedPosition[position]) {
               result[key][position] = node[key][position];
             }
@@ -221,7 +221,7 @@ export default class Playground extends Component<Props, State> {
       this.state.selectedNodePath || []
     ).reduce(
       (node: LayoutRecordT, cv) => node.children.get(cv),
-      this.state.layoutDefinition,
+      this.state.layoutDefinition
     );
     return selectedNode ? selectedNode.children.size : 0;
   };
@@ -229,23 +229,26 @@ export default class Playground extends Component<Props, State> {
   render() {
     const { layoutDefinition, selectedNodePath, direction } = this.state;
     const { height } = this.props;
-    console.log(layoutDefinition);
+    //console.log(layoutDefinition);
     const selectedNode: ?LayoutRecordT = selectedNodePath
       ? layoutDefinition.getIn(getPath(selectedNodePath))
       : null;
-
+    //console.log(layoutDefinition);
+    const { borderRadius } = layoutDefinition;
+    //console.log(borderRadius);
     const playground = (
       <div
-        className={`Playground ${this.props.renderSidebar ? '' : 'standalone'}`}
+        className={`Playground ${this.props.renderSidebar ? "" : "standalone"}`}
         onMouseDown={this.onMouseDown}
         style={{ height, maxHeight: height }}
-        ref={ref => {
+        ref={(ref) => {
           this._containerRef = ref;
-        }}>
+        }}
+      >
         <YogaNode
           layoutDefinition={layoutDefinition}
           selectedNodePath={selectedNodePath}
-          onClick={selectedNodePath => this.setState({ selectedNodePath })}
+          onClick={(selectedNodePath) => this.setState({ selectedNodePath })}
           onDoubleClick={this.onAdd}
           direction={direction}
           showGuides={this.props.showGuides}
@@ -280,7 +283,9 @@ export default class Playground extends Component<Props, State> {
                   selectedNodePath ? selectedNodePath.length === 0 : false
                 }
                 onChangeLayout={this.onChangeLayout}
-                onChangeSetting={(key, value) => this.setState({ [key]: value })}
+                onChangeSetting={(key, value) =>
+                  this.setState({ [key]: value })
+                }
                 direction={direction}
                 onRemove={
                   selectedNodePath && selectedNodePath.length > 0
@@ -289,7 +294,7 @@ export default class Playground extends Component<Props, State> {
                 }
                 onAdd={
                   selectedNodePath &&
-                    selectedNodePath.length < this.props.maxDepth
+                  selectedNodePath.length < this.props.maxDepth
                     ? this.onAdd
                     : undefined
                 }
@@ -306,11 +311,11 @@ export default class Playground extends Component<Props, State> {
 
     if (this.props.renderSidebar) {
       return (
-        <div className={`PlaygroundContainer ${this.props.className || ''}`}>
+        <div className={`PlaygroundContainer ${this.props.className || ""}`}>
           <div>
             {this.props.renderSidebar(
               layoutDefinition.getIn(getPath(selectedNodePath)),
-              this.onChangeLayout,
+              this.onChangeLayout
             )}
           </div>
           {playground}

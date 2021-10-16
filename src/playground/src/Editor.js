@@ -8,13 +8,13 @@
  * @format
  */
 
-import React, {Component} from 'react';
-import {Row, Col, Button, Tabs} from 'antd';
-import EditValue from './EditValue';
-import type {LayoutRecordT} from './LayoutRecord';
-import type {Yoga$Direction} from 'yoga-layout';
-import InfoText from './InfoText';
-import './Editor.css';
+import React, { Component } from "react";
+import { Row, Col, Button, Tabs } from "antd";
+import EditValue from "./EditValue";
+import type { LayoutRecordT } from "./LayoutRecord";
+import type { Yoga$Direction } from "yoga-layout";
+import InfoText from "./InfoText";
+import "./Editor.css";
 const TabPane = Tabs.TabPane;
 
 type Props = {
@@ -29,16 +29,16 @@ type Props = {
 
 export default class Editor extends Component<Props> {
   componentDidMount() {
-    document.addEventListener('keydown', this.onKeyDown);
+    document.addEventListener("keydown", this.onKeyDown);
   }
 
   componentWillUnmount() {
-    document.removeEventListener('keydown', this.onKeyDown);
+    document.removeEventListener("keydown", this.onKeyDown);
   }
 
   onKeyDown = (e: KeyboardEvent) => {
     if (
-      (e.key === 'Delete' || e.key === 'Backspace') &&
+      (e.key === "Delete" || e.key === "Backspace") &&
       this.props.onRemove &&
       !(e.target instanceof HTMLInputElement)
     ) {
@@ -47,7 +47,7 @@ export default class Editor extends Component<Props> {
   };
 
   render() {
-    const {node, selectedNodeIsRoot} = this.props;
+    const { node, selectedNodeIsRoot } = this.props;
     const disabled = !Boolean(node);
 
     return (
@@ -78,7 +78,7 @@ export default class Editor extends Component<Props> {
               onChange={this.props.onChangeLayout}
             />
 
-            <Row gutter={15} style={{marginTop: 30}}>
+            <Row gutter={15} style={{ marginTop: 30 }}>
               <Col span={8}>
                 <h2>
                   Basis
@@ -283,11 +283,16 @@ export default class Editor extends Component<Props> {
             </Row>
             <h2>
               Border radius
-              <InfoText doclink='aaa'>
-                Border radius of the object
-              </InfoText>
+              <InfoText doclink="aaa">Border radius of the object</InfoText>
             </h2>
-
+            <EditValue
+              type="text"
+              placeholder="0"
+              property="borderRadius"
+              disabled={disabled}
+              value={node ? node.borderRadius : undefined}
+              onChange={this.props.onChangeLayout}
+            />
             <h2>
               Aspect Ratio
               <InfoText doclink="/docs/aspect-ratio">
@@ -303,13 +308,13 @@ export default class Editor extends Component<Props> {
               onChange={this.props.onChangeLayout}
             />
 
-            {['padding', 'border', 'margin'].map(property => (
+            {["padding", "border", "margin"].map((property) => (
               <EditValue
                 property={property}
                 key={property}
                 value={node ? node[property] : undefined}
                 onChange={this.props.onChangeLayout}
-                disabled={property === 'margin' && selectedNodeIsRoot}
+                disabled={property === "margin" && selectedNodeIsRoot}
               />
             ))}
             <h2>
@@ -342,7 +347,8 @@ export default class Editor extends Component<Props> {
               icon="plus-circle-o"
               disabled={!Boolean(this.props.onAdd)}
               onClick={this.props.onAdd}
-              type="primary">
+              type="primary"
+            >
               add child node
             </Button>
           </Col>
@@ -351,7 +357,8 @@ export default class Editor extends Component<Props> {
               icon="close-circle-o"
               disabled={!Boolean(this.props.onRemove)}
               onClick={this.props.onRemove}
-              type="danger">
+              type="danger"
+            >
               remove node
             </Button>
           </Col>
