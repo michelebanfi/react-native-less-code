@@ -29,6 +29,7 @@ type ComputedLayout = {|
 |};
 
 type Props = {|
+  onChangeLayout: (key: string, value: any) => void,
   layoutDefinition: LayoutRecordT,
   className?: string,
   computedLayout?: ComputedLayout,
@@ -44,6 +45,8 @@ type Props = {|
 type State = {
   visible?: boolean,
   hovered: boolean,
+  dragX: number,
+  dragY: number,
 };
 
 export default class YogaNode extends Component<Props, State> {
@@ -172,6 +175,7 @@ export default class YogaNode extends Component<Props, State> {
   };
 
   onClick = (e: SyntheticMouseEvent<>) => {
+    console.log(" here");
     const { onClick } = this.props;
     if (onClick) {
       e.stopPropagation();
@@ -250,7 +254,6 @@ export default class YogaNode extends Component<Props, State> {
     const { layoutDefinition, className, path, selectedNodePath, label } =
       this.props;
     // $FlowFixMe
-    //console.log(this.computedLayout);
     //const { borderRadius } = layoutDefinition;
     const borderRadius = parseInt(layoutDefinition.borderRadius);
     const computedLayout: ComputedLayout =
@@ -261,10 +264,10 @@ export default class YogaNode extends Component<Props, State> {
       <div
         className={`YogaNode ${isFocused ? "focused" : ""} ${className || ""} ${
           this.state.visible ? "" : "invisible"
-        } ${this.state.hovered ? "hover" : ""}`}
+        } ${this.state.hovered ? (isFocused ? "edit" : "hover") : ""}`}
         style={
           path.length == 0
-            ? { width, height, borderRadius }
+            ? { width, height, borderRadius, position: "relative" }
             : { left, top, width, height, borderRadius }
         }
         onDoubleClick={this.onDoubleClick}
@@ -275,6 +278,47 @@ export default class YogaNode extends Component<Props, State> {
         }}
         onClick={this.onClick}
       >
+        {path.length != 0 && isFocused && (
+          <div>
+            <div
+              id="left"
+              draggable="true"
+              style={{
+                width: 4,
+                left: 0,
+                zIndex: 9999,
+                height: height,
+                cursor: "ew-resize",
+              }}
+              onDragStart={(e) => this.setState({ dragX: e.pageX })}
+              onDragEnd={(e) => {
+                this.props.onChangeLayout(
+                  "width",
+                  width + (this.state.dragX - e.pageX)
+                );
+              }}
+            />
+            <div
+              id="bottom"
+              draggable="true"
+              style={{
+                height: 4,
+                bottom: 0,
+                zIndex: 9999,
+                width: width,
+                cursor: "ns-resize",
+              }}
+              onDragStart={(e) => this.setState({ dragY: e.pageY })}
+              onDragEnd={(e) => {
+                this.props.onChangeLayout(
+                  "height",
+                  height + (e.pageY - this.state.dragY)
+                );
+              }}
+            />
+          </div>
+        )}
+
         {label && <div className="label">{label}</div>}
         {isFocused &&
           this.props.showGuides &&
@@ -283,6 +327,7 @@ export default class YogaNode extends Component<Props, State> {
           <YogaNode
             key={i}
             computedLayout={child}
+            onChangeLayout={this.props.onChangeLayout}
             label={String(i + 1)}
             layoutDefinition={layoutDefinition.children.get(i)}
             selectedNodePath={

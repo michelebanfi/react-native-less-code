@@ -5,7 +5,7 @@
  * LICENSE file in the root directory of this source tree.
  */
 
- .YogaNode {
+.YogaNode {
   background: white;
   position: absolute;
   transform: scale(1);
@@ -13,25 +13,29 @@
   transition: 0.2s all, 0s outline, 0s box-shadow;
   cursor: pointer;
 }
-
 .YogaNode.hover {
-  background-color: #F0FFF9;
+  background-color: #f0fff9;
 }
 
 .YogaNode .YogaNode {
   background: rgba(255, 255, 255, 0.7);
 }
 
-.YogaNode .YogaNode.hover{
+.YogaNode .YogaNode.hover {
   background: rgba(240, 255, 249, 0.7);
+}
+.YogaNode .YogaNode.edit {
+  cursor: move;
+  
 }
 
 .YogaNode:focus {
   outline: 0;
+  background-color: red;
 }
 
 .YogaNode.focused {
-  box-shadow: 0 0 0 2px #68CFBB, 0 0 15px rgba(0, 0, 0, 0.2),
+  box-shadow: 0 0 0 2px #68cfbb, 0 0 15px rgba(0, 0, 0, 0.2),
     inset 0 0 0px 1px rgba(255, 255, 255, 0.2);
   z-index: 2;
 }

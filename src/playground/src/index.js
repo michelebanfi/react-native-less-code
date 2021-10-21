@@ -246,6 +246,7 @@ export default class Playground extends Component<Props, State> {
         }}
       >
         <YogaNode
+          onChangeLayout={this.onChangeLayout}
           layoutDefinition={layoutDefinition}
           selectedNodePath={selectedNodePath}
           onClick={(selectedNodePath) => this.setState({ selectedNodePath })}
