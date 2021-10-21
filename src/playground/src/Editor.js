@@ -13,7 +13,7 @@ import { Row, Col, Button, Tabs } from "antd";
 import EditValue from "./EditValue";
 import type { LayoutRecordT } from "./LayoutRecord";
 import type { Yoga$Direction } from "yoga-layout";
-import { ChromePicker } from 'react-color';
+import { ChromePicker } from "react-color";
 import InfoText from "./InfoText";
 import "./Editor.css";
 const TabPane = Tabs.TabPane;
@@ -30,9 +30,11 @@ type Props = {
 
 export default class Editor extends Component<Props> {
   state = {
-    color: '#000',
-    borderColor: 'rgb(48 56 69 / 20%)',
-  }
+    color: "#000",
+    borderColor: "rgb(48 56 69 / 20%)",
+    showBg: false,
+    showBo: false,
+  };
   componentDidMount() {
     document.addEventListener("keydown", this.onKeyDown);
   }
@@ -373,18 +375,54 @@ export default class Editor extends Component<Props> {
               Border color
               <InfoText doclink="aaa">Border color of the view</InfoText>
             </h2>
-            <ChromePicker disableAlpha={true} color={this.state.borderColor.rgb} onChange={(color, e) => {
-              this.props.onChangeLayout('borderColor', color.hex);
-              this.setState({ borderColor: color })
-            }} />
+            <Button
+              icon="bg-colors-o"
+              type="primary"
+              shape="cirlce"
+              onClick={() =>
+                this.setState({ showBo: this.state.showBo ? false : true })
+              }
+            ></Button>
+            {this.state.showBo && (
+              <div
+                style={{ position: "absolute", zIndex: 999, top: 0, left: 0 }}
+              >
+                <ChromePicker
+                  disableAlpha={true}
+                  color={this.state.borderColor.rgb}
+                  onChange={(color, e) => {
+                    this.props.onChangeLayout("backgroundColor", color.hex);
+                    this.setState({ borderColor: color });
+                  }}
+                />
+              </div>
+            )}
             <h2>
               Background color
               <InfoText doclink="aaa">Background color of the view</InfoText>
             </h2>
-            <ChromePicker disableAlpha={true} color={this.state.color.rgb} onChange={(color, e) => {
-              this.props.onChangeLayout('backgroundColor', color.hex);
-              this.setState({ color: color })
-            }} />
+            <Button
+              icon="bg-colors-o"
+              type="primary"
+              shape="cirlce"
+              onClick={() =>
+                this.setState({ showBg: this.state.showBg ? false : true })
+              }
+            ></Button>
+            {this.state.showBg && (
+              <div
+                style={{ position: "absolute", zIndex: 999, top: 0, left: 0 }}
+              >
+                <ChromePicker
+                  disableAlpha={true}
+                  color={this.state.color.rgb}
+                  onChange={(color, e) => {
+                    this.props.onChangeLayout("backgroundColor", color.hex);
+                    this.setState({ color: color });
+                  }}
+                />
+              </div>
+            )}
           </TabPane>
         </Tabs>
 

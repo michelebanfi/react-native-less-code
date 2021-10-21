@@ -48,7 +48,7 @@ function getLayoutCode(node: LayoutRecordT, indent: string = ''): string {
   lines.push(indent + '<View style={{');
   lines.push(indent + '  flex: 1,');
   Object.keys(node.toJSON()).forEach(key => {
-    if (key === 'text' && node[key] !== undefined) {
+    if (key === 'text' && node[key] !== undefined && node[key] !== "") {
       console.log('theres a text')
       hasText = true;
       text = node[key];
@@ -147,7 +147,7 @@ export default function generateCode(
 ): string {
   return [
     `import React, {Component} from 'react';`,
-    `import {View, View} from 'react-native';`,
+    `import {View, Text} from 'react-native';`,
     '',
     'export default class MyLayout extends Component {',
     '  render() {',
