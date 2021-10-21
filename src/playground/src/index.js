@@ -255,7 +255,7 @@ export default class Playground extends Component<Props, State> {
           showGuides={this.props.showGuides}
         />
         {!this.props.renderSidebar && (
-          <Sidebar>
+          <Sidebar width={475}>
             <div className="Actions">
               <Row gutter={15}>
                 <Col span={12}>

@@ -13,6 +13,7 @@ import { Row, Col, Button, Tabs } from "antd";
 import EditValue from "./EditValue";
 import type { LayoutRecordT } from "./LayoutRecord";
 import type { Yoga$Direction } from "yoga-layout";
+import { ChromePicker } from 'react-color';
 import InfoText from "./InfoText";
 import "./Editor.css";
 const TabPane = Tabs.TabPane;
@@ -28,6 +29,10 @@ type Props = {
 };
 
 export default class Editor extends Component<Props> {
+  state = {
+    color: '#000',
+    borderColor: 'rgb(48 56 69 / 20%)',
+  }
   componentDidMount() {
     document.addEventListener("keydown", this.onKeyDown);
   }
@@ -282,18 +287,6 @@ export default class Editor extends Component<Props> {
               </Col>
             </Row>
             <h2>
-              Border radius
-              <InfoText doclink="aaa">Border radius of the object</InfoText>
-            </h2>
-            <EditValue
-              type="text"
-              placeholder="0"
-              property="borderRadius"
-              disabled={disabled}
-              value={node ? node.borderRadius : undefined}
-              onChange={this.props.onChangeLayout}
-            />
-            <h2>
               Aspect Ratio
               <InfoText doclink="/docs/aspect-ratio">
                 Width/Height aspect ratio of node
@@ -338,6 +331,60 @@ export default class Editor extends Component<Props> {
               value={node ? node.position : undefined}
               onChange={this.props.onChangeLayout}
             />
+          </TabPane>
+          <TabPane tab="Style" key="4" className="ant-tabs-tabpane">
+            <h2>
+              Border radius
+              <InfoText doclink="aaa">Border radius of the object</InfoText>
+            </h2>
+            <EditValue
+              type="text"
+              placeholder="0"
+              property="borderRadius"
+              disabled={disabled}
+              value={node ? node.borderRadius : undefined}
+              onChange={this.props.onChangeLayout}
+            />
+            <h2>
+              Text
+              <InfoText doclink="aaa">Text</InfoText>
+            </h2>
+            <EditValue
+              type="text"
+              placeholder="0"
+              property="text"
+              disabled={disabled}
+              value={node ? node.text : undefined}
+              onChange={this.props.onChangeLayout}
+            />
+            <h2>
+              Border
+              <InfoText doclink="aaa">Border width</InfoText>
+            </h2>
+            <EditValue
+              type="text"
+              placeholder="1"
+              property="borderWidth"
+              disabled={disabled}
+              value={node ? node.borderWidth : undefined}
+              onChange={this.props.onChangeLayout}
+            />
+            <h2>
+              Border color
+              <InfoText doclink="aaa">Border color of the view</InfoText>
+            </h2>
+            <ChromePicker disableAlpha={true} color={this.state.borderColor.rgb} onChange={(color, e) => {
+              this.props.onChangeLayout('borderColor', color.hex);
+              this.setState({ borderColor: color })
+            }} />
+            <h2>
+              Background color
+              <InfoText doclink="aaa">Background color of the view</InfoText>
+            </h2>
+            <ChromePicker disableAlpha={true} color={this.state.color.rgb} onChange={(color, e) => {
+              this.props.onChangeLayout('backgroundColor', color.hex);
+              this.setState({ color: color })
+            }} />
           </TabPane>
         </Tabs>
 

@@ -11,9 +11,9 @@
 import yoga from 'yoga-layout/dist/entry-browser';
 import LayoutRecord from './LayoutRecord';
 import PositionRecord from './PositionRecord';
-import {JSEnumLookup} from './CodeJavaScript';
-import type {LayoutRecordT} from './LayoutRecord';
-import type {Yoga$Direction} from 'yoga-layout';
+import { JSEnumLookup } from './CodeJavaScript';
+import type { LayoutRecordT } from './LayoutRecord';
+import type { Yoga$Direction } from 'yoga-layout';
 
 function getValue(value) {
   return typeof value === 'number' || /^\d+$/.test(value)
@@ -22,7 +22,6 @@ function getValue(value) {
 }
 
 function getEnum(yogaEnum: string, value: string | number): string {
-  console.log(yogaEnum);
   const enumValue = Object.keys(yoga)
     .filter(
       key =>
@@ -33,21 +32,27 @@ function getEnum(yogaEnum: string, value: string | number): string {
 
   return enumValue
     ? "'" +
-        enumValue
-          .replace(/^([A-Z]+)_/, '')
-          .replace('_', '-')
-          .toLowerCase() +
-        "'"
+    enumValue
+      .replace(/^([A-Z]+)_/, '')
+      .replace('_', '-')
+      .toLowerCase() +
+    "'"
     : getValue(value);
 }
 
 function getLayoutCode(node: LayoutRecordT, indent: string = ''): string {
   const lines = [];
+  let hasText = false;
+  let text = "";
   const untouchedLayout = LayoutRecord();
   lines.push(indent + '<View style={{');
   lines.push(indent + '  flex: 1,');
   Object.keys(node.toJSON()).forEach(key => {
-    if (key === 'border' && !node.border.equals(untouchedLayout[key])) {
+    if (key === 'text' && node[key] !== undefined) {
+      console.log('theres a text')
+      hasText = true;
+      text = node[key];
+    } else if (key === 'border' && !node.border.equals(untouchedLayout[key])) {
       ['Top', 'Left', 'Right', 'Bottom'].forEach(pKey => {
         if (
           untouchedLayout[key][pKey.toLowerCase()] !==
@@ -55,9 +60,9 @@ function getLayoutCode(node: LayoutRecordT, indent: string = ''): string {
         ) {
           lines.push(
             indent +
-              `  border${pKey}Width: ${getValue(
-                node.border[pKey.toLowerCase()],
-              )},`,
+            `  border${pKey}Width: ${getValue(
+              node.border[pKey.toLowerCase()],
+            )},`,
           );
         }
       });
@@ -65,7 +70,7 @@ function getLayoutCode(node: LayoutRecordT, indent: string = ''): string {
       node[key] instanceof PositionRecord &&
       !node[key].equals(untouchedLayout[key])
     ) {
-      const {top, left, right, bottom} = node[key].toJS();
+      const { top, left, right, bottom } = node[key].toJS();
       if (
         top &&
         top !== untouchedLayout[key].top &&
@@ -95,9 +100,9 @@ function getLayoutCode(node: LayoutRecordT, indent: string = ''): string {
         ) {
           lines.push(
             indent +
-              `  ${key}${pKey[0].toUpperCase()}${pKey.substr(1)}: ${getValue(
-                node[key][pKey],
-              )},`,
+            `  ${key}${pKey[0].toUpperCase()}${pKey.substr(1)}: ${getValue(
+              node[key][pKey],
+            )},`,
           );
         }
       });
@@ -114,8 +119,12 @@ function getLayoutCode(node: LayoutRecordT, indent: string = ''): string {
       lines.push(indent + `  ${key}: ${getEnum(key, node[key])},`);
     }
   });
-  if (node.children.size > 0) {
+  if (node.children.size > 0 || hasText) {
     lines.push(indent + '}}>');
+    if (hasText) {
+      lines.push(indent + `<Text>${text}</Text>`)
+      lines.push(indent + '</View>');
+    }
   } else {
     lines.push(indent + '}} />');
   }
@@ -138,7 +147,7 @@ export default function generateCode(
 ): string {
   return [
     `import React, {Component} from 'react';`,
-    `import {View} from 'react-native';`,
+    `import {View, View} from 'react-native';`,
     '',
     'export default class MyLayout extends Component {',
     '  render() {',

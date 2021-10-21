@@ -20,26 +20,26 @@ import "./YogaNode.css";
 
 type ComputedLayout = {|
   left: number,
-  top: number,
-  width: number,
-  height: number,
-  borderRadius: number,
-  children: Array<ComputedLayout>,
-  node: Yoga$Node,
+    top: number,
+      width: number,
+        height: number,
+          borderRadius: number,
+            children: Array < ComputedLayout >,
+              node: Yoga$Node,
 |};
 
 type Props = {|
   onChangeLayout: (key: string, value: any) => void,
-  layoutDefinition: LayoutRecordT,
-  className?: string,
-  computedLayout?: ComputedLayout,
-  path: Array<number>,
-  selectedNodePath?: ?Array<number>,
-  direction?: Yoga$Direction,
-  label?: string,
-  showGuides: boolean,
-  onClick?: (path: Array<number>) => void,
-  onDoubleClick?: (path: Array<number>) => void,
+    layoutDefinition: LayoutRecordT,
+      className ?: string,
+      computedLayout ?: ComputedLayout,
+      path: Array < number >,
+        selectedNodePath ?: ? Array < number >,
+        direction ?: Yoga$Direction,
+        label ?: string,
+        showGuides: boolean,
+          onClick ?: (path: Array<number>) => void,
+          onDoubleClick ?: (path: Array<number>) => void,
 |};
 
 type State = {
@@ -134,6 +134,10 @@ export default class YogaNode extends Component<Props, State> {
       "flexWrap",
       "flexDirection",
       "borderRadius",
+      "borderWidth",
+      "borderColor",
+      "backgroundColor",
+      "text",
     ].forEach((key) => {
       try {
         const value =
@@ -141,7 +145,7 @@ export default class YogaNode extends Component<Props, State> {
             ? defaultLayout[key]
             : layoutDefinition[key];
         root[`set${key[0].toUpperCase()}${key.substr(1)}`](value);
-      } catch (e) {}
+      } catch (e) { }
     });
 
     ["padding", "margin", "position", "border"].forEach((key) => {
@@ -151,7 +155,7 @@ export default class YogaNode extends Component<Props, State> {
             yoga[`EDGE_${direction.toUpperCase()}`],
             layoutDefinition[key][direction]
           );
-        } catch (e) {}
+        } catch (e) { }
       });
     });
 
@@ -175,7 +179,6 @@ export default class YogaNode extends Component<Props, State> {
   };
 
   onClick = (e: SyntheticMouseEvent<>) => {
-    console.log(" here");
     const { onClick } = this.props;
     if (onClick) {
       e.stopPropagation();
@@ -256,19 +259,22 @@ export default class YogaNode extends Component<Props, State> {
     // $FlowFixMe
     //const { borderRadius } = layoutDefinition;
     const borderRadius = parseInt(layoutDefinition.borderRadius);
+    const backgroundColor = layoutDefinition.backgroundColor;
+    const borderColor = layoutDefinition.borderColor;
+    const borderWidth = parseInt(layoutDefinition.borderWidth);
+    const text = layoutDefinition.text;
     const computedLayout: ComputedLayout =
       this.props.computedLayout || this.computedLayout;
     const { left, top, width, height, children } = computedLayout;
     const isFocused = selectedNodePath && selectedNodePath.length === 0;
     return (
       <div
-        className={`YogaNode ${isFocused ? "focused" : ""} ${className || ""} ${
-          this.state.visible ? "" : "invisible"
-        } ${this.state.hovered ? (isFocused ? "edit" : "hover") : ""}`}
+        className={`YogaNode ${isFocused ? "focused" : ""} ${className || ""} ${this.state.visible ? "" : "invisible"
+          } ${this.state.hovered ? (isFocused ? "edit" : "hover") : ""}`}
         style={
           path.length == 0
             ? { width, height, borderRadius, position: "relative" }
-            : { left, top, width, height, borderRadius }
+            : { left, top, width, height, borderRadius, backgroundColor, borderColor, borderWidth, borderStyle: 'solid' }
         }
         onDoubleClick={this.onDoubleClick}
         onMouseMove={this.onMouseMove}
@@ -278,6 +284,7 @@ export default class YogaNode extends Component<Props, State> {
         }}
         onClick={this.onClick}
       >
+        {text && <span>{text}</span>}
         {path.length != 0 && isFocused && (
           <div>
             <div
@@ -332,8 +339,8 @@ export default class YogaNode extends Component<Props, State> {
             layoutDefinition={layoutDefinition.children.get(i)}
             selectedNodePath={
               selectedNodePath &&
-              selectedNodePath.length > 0 &&
-              selectedNodePath[0] === i
+                selectedNodePath.length > 0 &&
+                selectedNodePath[0] === i
                 ? selectedNodePath.slice(1)
                 : null
             }

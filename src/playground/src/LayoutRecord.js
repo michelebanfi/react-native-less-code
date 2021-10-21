@@ -8,10 +8,10 @@
  * @format
  */
 
-import {Record, List} from 'immutable';
-import type {RecordOf} from 'immutable';
+import { Record, List } from 'immutable';
+import type { RecordOf } from 'immutable';
 import PositionRecord from './PositionRecord';
-import type {PositionRecordT} from './PositionRecord';
+import type { PositionRecordT } from './PositionRecord';
 import yoga from 'yoga-layout/dist/entry-browser';
 
 import type {
@@ -51,6 +51,10 @@ export type LayoutRecordT = RecordOf<{
   minHeight?: number,
   maxHeight?: number,
   borderRadius?: number,
+  borderWidth?: Number,
+  borderColor?: String,
+  backgroundColor?: String,
+  text?: String,
 }>;
 
 const r: LayoutRecordT = Record({
@@ -86,6 +90,10 @@ const r: LayoutRecordT = Record({
   minHeight: NaN,
   maxHeight: NaN,
   borderRadius: 0,
+  borderWidth: 1,
+  borderColor: 'rgb(48 56 69 / 20%)',
+  backgroundColor: '#fff',
+  text: undefined,
 });
 
 export default r;
