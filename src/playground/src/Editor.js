@@ -353,7 +353,7 @@ export default class Editor extends Component<Props> {
             </h2>
             <EditValue
               type="text"
-              placeholder="0"
+              placeholder="Text"
               property="text"
               disabled={disabled}
               value={node ? node.text : undefined}

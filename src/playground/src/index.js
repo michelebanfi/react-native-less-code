@@ -18,7 +18,7 @@ import { List, setIn } from "immutable";
 import PositionRecord from "./PositionRecord";
 import LayoutRecord from "./LayoutRecord";
 import Sidebar from "./Sidebar";
-import { Row, Col, Button } from "antd";
+import { Row, Col, Button, Menu, Dropdown } from "antd";
 import btoa from "btoa";
 import type { LayoutRecordT } from "./LayoutRecord";
 import type { Yoga$Direction } from "yoga-layout";
@@ -66,6 +66,26 @@ export default class Playground extends Component<Props, State> {
     showGuides: true,
     persist: false,
   };
+  menuPhones = () => (
+    <Menu>
+      <Menu.Item
+        onClick={async () => {
+          await this.onChangeLayout("width", 375);
+          this.onChangeLayout("height", 812);
+        }}
+      >
+        Iphone XS 375x812
+      </Menu.Item>
+      <Menu.Item
+        onClick={async () => {
+          await this.onChangeLayout("width", 412);
+          this.onChangeLayout("height", 732);
+        }}
+      >
+        Pixel XL 412x732
+      </Menu.Item>
+    </Menu>
+  );
 
   rehydrate = (node: Object): LayoutRecord => {
     let record = LayoutRecord(node);
@@ -129,10 +149,17 @@ export default class Playground extends Component<Props, State> {
     }
   }
 
-  onChangeLayout = (key: string, value: any) => {
+  onChangeLayout = async(key: string, value: any) => {
     const { selectedNodePath } = this.state;
     if (selectedNodePath) {
-      this.modifyAtPath([...getPath(selectedNodePath), key], value);
+      await this.modifyAtPath([...getPath(selectedNodePath), key], value);
+      if (key === "text") {
+        await this.modifyAtPath(
+          [...getPath(selectedNodePath), "justifyContent"],
+          "center"
+        );
+        this.modifyAtPath([...getPath(selectedNodePath), "alignItems"], "center");
+      }
     }
   };
 
@@ -264,17 +291,18 @@ export default class Playground extends Component<Props, State> {
                     direction={direction}
                   />
                 </Col>
-                {/* <Col span={12}>
-                  {this.props.persist ? (
-                    <URLShortener />
-                  ) : (
-                    <Button
-                      href={`/playground?${this.getHash()}`}
-                      type="primary">
-                      Open Playground
-                    </Button>
-                  )}
-                </Col> */}
+                <Col span={12}>
+                  {this.state.selectedNodePath &&
+                    this.state.selectedNodePath.length == 0 && (
+                      <Dropdown
+                        overlay={this.menuPhones}
+                        placement={"bottomCenter"}
+                        arrow
+                      >
+                        <Button>Phones dimensions</Button>
+                      </Dropdown>
+                    )}
+                </Col>
               </Row>
             </div>
             {this.state.selectedNodePath ? (

@@ -49,7 +49,6 @@ function getLayoutCode(node: LayoutRecordT, indent: string = ''): string {
   lines.push(indent + '  flex: 1,');
   Object.keys(node.toJSON()).forEach(key => {
     if (key === 'text' && node[key] !== undefined && node[key] !== "") {
-      console.log('theres a text')
       hasText = true;
       text = node[key];
     } else if (key === 'border' && !node.border.equals(untouchedLayout[key])) {
