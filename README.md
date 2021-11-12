@@ -1,14 +1,5 @@
 # React native less code project
 
-
-## SITUA
-- [ ] color picker button
-- [ ] clever css
-- [ ] fix text creation and so on
-- [ ] icons
-- [ ] fixing resizing UX
-- [ ] borderRadius 
-- [x] resizing
-- [x] backgroundColor
-- [x] borderWidth
-- [x] borderColor
+This project is based on [Yoga playground](https://github.com/facebook/yoga) and on top of that i implemented others features.
+The website is avaible [here](https://michelebanfi.github.io/react-native-less-code).
+Feel free to contribute!

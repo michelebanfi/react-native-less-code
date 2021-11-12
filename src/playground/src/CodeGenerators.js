@@ -14,10 +14,10 @@ import SyntaxHighlighter, {
   registerLanguage,
 } from "react-syntax-highlighter/prism-light";
 import styles from "react-syntax-highlighter/styles/prism/prism";
-import CodeJavaScript from "./CodeJavaScript";
-import CodeLitho from "./CodeLitho";
+// import CodeJavaScript from "./CodeJavaScript";
+// import CodeLitho from "./CodeLitho";
 import CodeReactNative from "./CodeReactNative";
-import CodeComponentKit from "./CodeComponentKit";
+// import CodeComponentKit from "./CodeComponentKit";
 import jsx from "react-syntax-highlighter/languages/prism/jsx";
 import "./CodeGenerators.css";
 import type { LayoutRecordT } from "./LayoutRecord";
@@ -40,16 +40,16 @@ type State = {
 };
 
 const LANGUAGES = {
-  litho: {
-    title: "Litho",
-    generator: CodeLitho,
-    syntax: "java",
-  },
-  componentKit: {
-    title: "ComponentKit",
-    generator: CodeComponentKit,
-    syntax: "objectivec",
-  },
+  // litho: {
+  //   title: "Litho",
+  //   generator: CodeLitho,
+  //   syntax: "java",
+  // },
+  // componentKit: {
+  //   title: "ComponentKit",
+  //   generator: CodeComponentKit,
+  //   syntax: "objectivec",
+  // },
   reactNative: {
     title: "React Native",
     generator: CodeReactNative,
