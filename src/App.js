@@ -1,7 +1,7 @@
-import logo from './logo.svg';
-import Playground from './playground/src';
-import './App.css';
-import React from 'react';
+import logo from "./logo.svg";
+import Playground from "./playground/src";
+import "./App.css";
+import React from "react";
 import "antd/dist/antd.css";
 
 const playgroundInitialState = {
@@ -9,10 +9,10 @@ const playgroundInitialState = {
   height: 700,
   alignItems: 1,
   padding: {
-    top: '20',
-    right: '20',
-    bottom: '20',
-    left: '20',
+    top: "20",
+    right: "20",
+    bottom: "20",
+    left: "20",
   },
   children: [
     {
@@ -27,10 +27,10 @@ const playgroundInitialState = {
       width: 100,
       height: 100,
       margin: {
-        right: '20',
-        left: '20',
+        right: "20",
+        left: "20",
       },
-      flexGrow: '1',
+      flexGrow: "1",
       minWidth: null,
       maxWidth: null,
       minHeight: null,
@@ -53,13 +53,21 @@ const playgroundInitialState = {
 
 export default class App extends React.Component {
   render() {
-    return (
-      <Playground
-        selectedNodePath={[]}
-        showGuides={true}
-        height={'100vh'}
-        layoutDefinition={playgroundInitialState}
-      />
-    )
+    if (window.innerWidth >= 1100) {
+      return (
+        <Playground
+          selectedNodePath={[]}
+          showGuides={true}
+          height={"100vh"}
+          layoutDefinition={playgroundInitialState}
+        />
+      );
+    } else {
+      return (
+        <div>
+          <div>You need a pc to use this tool!</div>
+        </div>
+      );
+    }
   }
 }

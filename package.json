@@ -1,27 +1,32 @@
 {
   "name": "ncode",
   "version": "0.1.0",
+  "homepage": "https://michelebanfi.github.io/react-native-less-code",
   "private": true,
   "dependencies": {
     "@testing-library/jest-dom": "^5.11.4",
     "@testing-library/react": "^11.1.0",
     "@testing-library/user-event": "^12.1.10",
-    "react": "^17.0.2",
-    "react-dom": "^17.0.2",
-    "react-scripts": "4.0.3",
-    "web-vitals": "^1.0.1",
     "antd": "^3.6.5",
     "atob": "^2.1.1",
     "btoa": "^1.2.1",
+    "gh-pages": "^3.2.3",
+    "immutable": "^4.0.0-rc.9",
+    "react": "^17.0.2",
+    "react-color": "^2.19.3",
+    "react-dom": "^17.0.2",
+    "react-scripts": "4.0.3",
     "react-syntax-highlighter": "^8.0.0",
-    "yoga-layout": "^1.9.3",
-    "immutable": "^4.0.0-rc.9"
+    "web-vitals": "^1.0.1",
+    "yoga-layout": "^1.9.3"
   },
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d build"
   },
   "eslintConfig": {
     "extends": [
