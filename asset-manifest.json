@@ -1,8 +1,8 @@
 {
   "files": {
     "main.css": "/react-native-less-code/static/css/main.9ad78bdf.chunk.css",
-    "main.js": "/react-native-less-code/static/js/main.223117dd.chunk.js",
-    "main.js.map": "/react-native-less-code/static/js/main.223117dd.chunk.js.map",
+    "main.js": "/react-native-less-code/static/js/main.9b6ef92c.chunk.js",
+    "main.js.map": "/react-native-less-code/static/js/main.9b6ef92c.chunk.js.map",
     "runtime-main.js": "/react-native-less-code/static/js/runtime-main.bfa5875e.js",
     "runtime-main.js.map": "/react-native-less-code/static/js/runtime-main.bfa5875e.js.map",
     "static/css/2.eb77542a.chunk.css": "/react-native-less-code/static/css/2.eb77542a.chunk.css",
@@ -21,6 +21,6 @@
     "static/css/2.eb77542a.chunk.css",
     "static/js/2.294745f9.chunk.js",
     "static/css/main.9ad78bdf.chunk.css",
-    "static/js/main.223117dd.chunk.js"
+    "static/js/main.9b6ef92c.chunk.js"
   ]
 }
